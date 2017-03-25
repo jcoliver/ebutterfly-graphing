@@ -93,35 +93,3 @@ par(mfrow = c(1, 1),
     las = 0)
 
 dev.off()
-
-################################################################################
-# For plotting two y-axes
-# par(mar = c(5, 4, 4, 5) + 0.1)
-# # Plot observations on left-hand y-axis
-# plot(x = submission.data$date,
-#      y = submission.data$observations,
-#      type = "l",
-#      col = "darkred",
-#      lwd = 2,
-#      xlab = "Date",
-#      ylab = "# Observations")
-# 
-# # Now plot checklists on right-hand y-axis
-# par(new = TRUE)
-# plot(x = submission.data$date,
-#      y = submission.data$all.checklist,
-#      type = "l",
-#      col = "cadetblue",
-#      lwd = 2,
-#      xaxt = "n",
-#      yaxt = "n",
-#      xlab = "",
-#      ylab = "")
-# axis(side = 4)
-# mtext(text = "# Checklists", side = 4, line = 3)
-# legend("topleft", 
-#        legend = c("Observations", "Checklists"),
-#        col = c("darkred", "cadetblue"), 
-#        lty = 1, 
-#        lwd = 1,
-#        cex = 0.6)
