@@ -7,45 +7,70 @@ rm(list = ls())
 
 ################################################################################
 submission.data <- read.csv(file = "data/submission-data.csv")
+output.file <- "output/figure-1"
+output.format <- "pdf"
 
+# Create a date column
 add.zero <- submission.data$month < 10
-
 submission.data$month[add.zero] <- paste0("0", submission.data$month[add.zero])
-
 submission.data$date <- as.Date(paste0(as.character(submission.data$year), 
                                        submission.data$month, 
                                        "01"), 
                                 "%Y%m%d")
 
-line.cols <- c("darkred", "steelblue3", "black")
-line.types <- c(1, 1, 3)
-################################################################################
-# Two-panel graph, top is Observations over time
-# Bottom is checklists over time
-par(mfrow = c(2, 1))
+# Set up graphics values (colors, widths, etc.)
+line.cols <- c("black", "steelblue3", "black")
+line.types <- c(1, 1, 2)
+line.widths <- c(3, 3, 3)
 
-par(mgp = c(2, 0.5, 0), # default mgp = c(3, 1, 0)
+# Positioning and labels for x-axis
+x.ticks <- as.Date(c("20120101", "20130101", "20140101", "20150101", "20160101", "20170101"), "%Y%m%d")
+x.labels <- c("2012", "2013", "2014", "2015", "2016")
+x.label.at <- as.Date(c("20120701", "20130701", "20140701", "20150701", "20160701"), "%Y%m%d")
+################################################################################
+# Two-panel graph:
+# Top is Observations over time
+# Bottom is Checklists over time
+
+# Open graphics device
+if (output.format == "png") {
+  png(file = paste0(output.file, ".", output.format))
+} else {
+  pdf(file = paste0(output.file, ".pdf"), useDingbats = FALSE)
+}
+
+# Set graphic parameters
+par(mfrow = c(2, 1), # multi-figure, two rows
+    mgp = c(2, 0.5, 0), # move axis title & labels close to axis
+    mar = c(2, 4, 2, 2) + 0.1, # reduce margins
     las = 1) # for horizontal axis labels
-# Plot observations on left-hand y-axis
+
+# Plot observations
 plot(x = submission.data$date,
      y = submission.data$observations / 1000,
      type = "l",
      col = line.cols[1],
      lty = line.types[1],
-     lwd = 2,
+     lwd = line.widths[1],
      xlab = "",
+     xaxt = "n",
      ylab = "Observations (x 1000)")
+axis(side = 1, at = x.ticks, labels = FALSE)
+axis(side = 1, at = x.label.at, tick = FALSE, labels = x.labels)
 
-# Checklists vs complete checklists
+# Plot checklists
 # Plot all checklists first
 plot(x = submission.data$date,
      y = submission.data$all.checklist / 100,
      type = "l",
      col = line.cols[2],
      lty = line.types[2],
-     lwd = 3,
+     lwd = line.widths[2],
      xlab = "",
+     xaxt = "n",
      ylab = "Checklists (x 100)")
+axis(side = 1, at = x.ticks, labels = FALSE)
+axis(side = 1, at = x.label.at, tick = FALSE, labels = x.labels)
 
 # Add complete checklists
 points(x = submission.data$date,
@@ -53,44 +78,50 @@ points(x = submission.data$date,
        type = "l",
        col = line.cols[3],
        lty = line.types[3],
-       lwd = 3)
+       lwd = line.widths[3])
 legend("topleft", 
        legend = c("All Checklists", "Complete Checklists"),
        col = line.cols[2:3], 
        lty = line.types[2:3], 
-       lwd = 2,
-       cex = 0.7)
+       lwd = line.widths[2:3] - 1,
+       cex = 0.8)
 
-par(mfrow = c(1, 1))
+# restore graphics defaults
+par(mfrow = c(1, 1),
+    mgp = c(3, 1, 0),
+    mar = c(5, 4, 4, 2) + 0.1, 
+    las = 0)
+
+dev.off()
 
 ################################################################################
 # For plotting two y-axes
-par(mar = c(5, 4, 4, 5) + 0.1)
-# Plot observations on left-hand y-axis
-plot(x = submission.data$date,
-     y = submission.data$observations,
-     type = "l",
-     col = "darkred",
-     lwd = 2,
-     xlab = "Date",
-     ylab = "# Observations")
-
-# Now plot checklists on right-hand y-axis
-par(new = TRUE)
-plot(x = submission.data$date,
-     y = submission.data$all.checklist,
-     type = "l",
-     col = "cadetblue",
-     lwd = 2,
-     xaxt = "n",
-     yaxt = "n",
-     xlab = "",
-     ylab = "")
-axis(side = 4)
-mtext(text = "# Checklists", side = 4, line = 3)
-legend("topleft", 
-       legend = c("Observations", "Checklists"),
-       col = c("darkred", "cadetblue"), 
-       lty = 1, 
-       lwd = 1,
-       cex = 0.6)
+# par(mar = c(5, 4, 4, 5) + 0.1)
+# # Plot observations on left-hand y-axis
+# plot(x = submission.data$date,
+#      y = submission.data$observations,
+#      type = "l",
+#      col = "darkred",
+#      lwd = 2,
+#      xlab = "Date",
+#      ylab = "# Observations")
+# 
+# # Now plot checklists on right-hand y-axis
+# par(new = TRUE)
+# plot(x = submission.data$date,
+#      y = submission.data$all.checklist,
+#      type = "l",
+#      col = "cadetblue",
+#      lwd = 2,
+#      xaxt = "n",
+#      yaxt = "n",
+#      xlab = "",
+#      ylab = "")
+# axis(side = 4)
+# mtext(text = "# Checklists", side = 4, line = 3)
+# legend("topleft", 
+#        legend = c("Observations", "Checklists"),
+#        col = c("darkred", "cadetblue"), 
+#        lty = 1, 
+#        lwd = 1,
+#        cex = 0.6)
