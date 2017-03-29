@@ -25,12 +25,11 @@ long.bound <- c(-85, -60)
 lat.bound <- c(41, 48)
 
 dates <- c("2012-04-15", "2012-04-16", "2012-04-17")
-all.points <- vatal.data[vatal.data$date %in% dates, ]
-
 
 pdf(file = "output/figure-3-maps.pdf", useDingbats = FALSE)
 # png(file = "output/figure-3-maps.png")
-par(mfrow = c(3, 1))
+par(mfrow = c(3, 1),
+    mar = c(2, 2, 2, 1) + 0.1)
 for (one.date in dates) {
   to.plot <- vatal.data[vatal.data$date == one.date, ]
   map(database = "worldHires",
@@ -42,11 +41,15 @@ for (one.date in dates) {
          y = to.plot$latitude,
          cex = 1.2, 
          pch = 21, 
-         bg = "black",
+         bg = "orangered",
          col = "black")
-  
+  legend("bottomright", 
+         legend = one.date, 
+         cex = 2.0,
+         bty = "n")
 }
-par(mfrow = c(1, 1))
+par(mfrow = c(1, 1),
+    mar = c(5, 4, 4, 2) + 0.1)
 dev.off()
 
 
