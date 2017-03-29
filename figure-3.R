@@ -17,7 +17,8 @@ library(maps)
 library(mapdata)
 
 # Load data
-vatal.data <- read.delim(file = "data/vanessa-atalanta-data.txt")
+vatal.data <- read.csv(file = "data/vanessa-atalanta-data.csv", 
+                       stringsAsFactors = FALSE)
 
 ################################################################################
 # Plotting points on map, one map for each of three days
