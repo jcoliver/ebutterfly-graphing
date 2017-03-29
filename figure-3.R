@@ -30,7 +30,7 @@ dates <- c("2012-04-15", "2012-04-16", "2012-04-17")
 pdf(file = "output/figure-3-maps.pdf", useDingbats = FALSE)
 # png(file = "output/figure-3-maps.png")
 par(mfrow = c(3, 1),
-    mar = c(2, 2, 2, 1) + 0.1)
+    mar = c(1, 2, 1, 1) + 0.1)
 for (one.date in dates) {
   to.plot <- vatal.data[vatal.data$date == one.date, ]
   map(database = "worldHires",
