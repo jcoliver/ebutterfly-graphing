@@ -12,9 +12,12 @@ rm(list = ls())
 
 # Load dependancies
 #install.packages("maps")
-library(maps)
+library("maps")
 #install.packages("mapdata")
-library(mapdata)
+library("mapdata")
+#install.packages("sp")
+#install.packages("raster")
+library("raster")
 
 # Load data
 vatal.data <- read.csv(file = "data/vanessa-atalanta-data.csv", 
@@ -22,47 +25,6 @@ vatal.data <- read.csv(file = "data/vanessa-atalanta-data.csv",
 
 ################################################################################
 # Plotting points on map, one map for each of three days
-long.bound <- c(-85, -60)
-lat.bound <- c(42, 47.5)
-
-dates <- c("2012-04-15", "2012-04-16", "2012-04-17")
-
-pdf(file = "output/figure-3-maps.pdf", useDingbats = FALSE)
-# png(file = "output/figure-3-maps.png")
-par(mfrow = c(3, 1),
-    mar = c(1, 2, 1, 1) + 0.1)
-for (one.date in dates) {
-  to.plot <- vatal.data[vatal.data$date == one.date, ]
-  map(database = "world",# "worldHires",
-      xlim = long.bound,
-      ylim = lat.bound,
-      col = "#E7E7E7",
-      fill = TRUE)
-  points(x = to.plot$longitude,
-         y = to.plot$latitude,
-         cex = 1.2, 
-         pch = 21, 
-         bg = "orangered",
-         col = "black")
-  legend("bottomright", 
-         legend = one.date, 
-         cex = 2.0,
-         bty = "n")
-}
-par(mfrow = c(1, 1),
-    mar = c(5, 4, 4, 2) + 0.1)
-dev.off()
-
-
-
-
-################################################################################
-# Plotting points on map, one map for each of three days
-#install.packages("maps")
-library(maps)
-#install.packages("sp")
-#install.packages("raster")
-library("raster")
 
 long.bound <- c(-85, -60)
 lat.bound <- c(41, 48) # lower limit must be < 43, or Lakes Erie & Ontario won't be drawn
@@ -70,7 +32,7 @@ lat.bound <- c(41, 48) # lower limit must be < 43, or Lakes Erie & Ontario won't
 dates <- c("2012-04-15", "2012-04-16", "2012-04-17")
 
 us <- getData(name = "GADM", country = "USA", level = 1, path = "data/")
-canada <- getData(name = "GADM", country = "CAN", level = 1)
+canada <- getData(name = "GADM", country = "CAN", level = 1, path = "data/")
 
 # Subsetting data draws maps faster
 us.states <- c("Maine", "New Hampshire", "Vermont", "Massachusetts", "Rhode Island",
@@ -82,8 +44,7 @@ ca.provinces <- c("Ontario", "Québec", "New Brunswick", "Nova Scotia",
                   "Prince Edward Island")
 ca.province.data <- canada[canada$NAME_1 %in% ca.provinces, ]
 
-
-pdf(file = "output/figure-3-maps.pdf", useDingbats = FALSE)
+pdf(file = "output/figure-3-maps-map.pdf", useDingbats = FALSE)
 par(mfrow = c(3, 1),
     mar = c(1, 2, 1, 1) + 0.1)
 for (one.date in dates) {
@@ -96,16 +57,16 @@ for (one.date in dates) {
       xlim = long.bound, 
       ylim = lat.bound)
   # Draw US States
-  # plot(us.state.data, 
-  #      col = "#E7E7E7", 
+  # plot(us.state.data,
+  #      col = "#E7E7E7",
   #      add = TRUE)
   map(us.state.data,
       col = "#E7E7E7",
       fill = TRUE,
       add = TRUE)
   # Add Canada provinces
-  # plot(ca.province.data, 
-  #      col = "#E7E7E7", 
+  # plot(ca.province.data,
+  #      col = "#E7E7E7",
   #      add = TRUE)
   map(ca.province.data,
       col = "#E7E7E7",
@@ -133,33 +94,8 @@ par(mfrow = c(1, 1),
     mar = c(5, 4, 4, 2) + 0.1)
 dev.off()
 
-##########
-
-par(mfrow = c(3, 1),
-    mar = c(1, 2, 1, 1) + 0.1)
-for (one.date in dates) {
-  to.plot <- vatal.data[vatal.data$date == one.date, ]
-  map(database = "world",# "worldHires",
-      xlim = long.bound,
-      ylim = lat.bound,
-      col = "#E7E7E7",
-      fill = TRUE)
-  points(x = to.plot$longitude,
-         y = to.plot$latitude,
-         cex = 1.2, 
-         pch = 21, 
-         bg = "orangered",
-         col = "black")
-  legend("bottomright", 
-         legend = one.date, 
-         cex = 2.0,
-         bty = "n")
-}
-par(mfrow = c(1, 1),
-    mar = c(5, 4, 4, 2) + 0.1)
-
-
-
+################################################################################
+# DEPRECATED
 # Plotting regression between start time and latitude for April 16
 vatal.Apr.16 <- vatal.data[vatal.data$date == "2012-04-16", ]
 
