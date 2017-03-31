@@ -6,6 +6,11 @@
 rm(list = ls())
 
 ################################################################################
+# SUMMARY
+# Plots observations of Vanessa atalanta over three days in 2012 (15-17 April).
+# Uses SpatialPolygons2map (via generic `plot` call)
+
+################################################################################
 # SETUP
 # Load dependancies
 # Load data
@@ -44,7 +49,7 @@ ca.provinces <- c("Ontario", "Québec", "New Brunswick", "Nova Scotia",
                   "Prince Edward Island")
 ca.province.data <- canada[canada$NAME_1 %in% ca.provinces, ]
 
-pdf(file = "output/figure-3-maps-map.pdf", useDingbats = FALSE)
+pdf(file = "output/figure-3.pdf", useDingbats = FALSE)
 par(mfrow = c(3, 1),
     mar = c(1, 2, 1, 1) + 0.1)
 for (one.date in dates) {
@@ -63,7 +68,8 @@ for (one.date in dates) {
   map(us.state.data,
       col = "#E7E7E7",
       fill = TRUE,
-      add = TRUE)
+      add = TRUE,
+      namefield = "NAME_1") # Will issue warning without this
   # Add Canada provinces
   # plot(ca.province.data,
   #      col = "#E7E7E7",
@@ -71,7 +77,8 @@ for (one.date in dates) {
   map(ca.province.data,
       col = "#E7E7E7",
       fill = TRUE,
-      add = TRUE)
+      add = TRUE,
+      namefield = "NAME_1") # Will issue warning without this
   # Add lakes
   map(database = "lakes", add = TRUE,
       xlim = long.bound,
