@@ -7,8 +7,52 @@ rm(list = ls())
 
 ################################################################################
 # SUMMARY
-# Plots observations of Vanessa atalanta over three days in 2012 (15-17 April).
-# Uses SpatialPolygons2map (via generic `plot` call)
+# Plots observations of Danaus plexippus over three months in 2012 (May, June, 
+# July).
+
+################################################################################
+# SETUP
+# Load dependancies
+# Load data
+
+# Load dependencies
+# install.packages("ggplot2")
+library("ggplot2")
+# install.packages("ggmap")
+library("ggmap")
+
+# Load data
+dplex.data <- read.csv(file = "data/danaus-plexippus-data.csv", 
+                       stringsAsFactors = FALSE)
+
+# Subset as appropriate
+dplex.data <- dplex.data[dplex.data$Year == 2012, ] # To be sure
+incl.months <- c(5, 6, 7)
+dplex.data <- dplex.data[dplex.data$Month %in% incl.months, ]
+dplex.data$MonthName <- "May 2012"
+dplex.data$MonthName[dplex.data$Month == 6] <- "June 2012"
+dplex.data$MonthName[dplex.data$Month == 7] <- "July 2012"
+dplex.data$MonthName <- factor(dplex.data$MonthName, levels = c("May 2012", "June 2012", "July 2012"))
+
+################################################################################
+# Graph with the ggmap package, plotting density
+
+# Map boundaries for get_map: left, bottom, right, top
+map.bounds <- c(-123, 41, -53, 55) # One point at 57.33 Lat
+# Location: left, bottom, right, top
+canada.map <- get_map(location = map.bounds, source = "stamen", maptype = "toner-lite")
+dplex.map <- ggmap(canada.map) + 
+  stat_density2d(data = dplex.data,
+                 aes(x = Longitude, y = Latitude, fill = ..level.., alpha = ..level..),
+                 geom = "polygon",
+                 bins = 60) +
+  scale_fill_gradient(low = "#0000FF", high = "#FF0000") +
+  theme(legend.position = "none") +
+  theme(axis.title.x = element_blank(),
+        axis.title.y = element_blank()) +
+  facet_wrap(~MonthName, nrow = 3)
+print(dplex.map)
+ggsave(dplex.map, filename = "output/figure-4-ggmap.pdf")
 
 ################################################################################
 # SETUP
