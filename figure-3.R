@@ -15,6 +15,46 @@ rm(list = ls())
 # Load dependancies
 # Load data
 
+# Load dependencies
+# install.packages("ggplot2")
+library("ggplot2")
+# install.packages("ggmap")
+library("ggmap")
+
+# Load data
+vatal.data <- read.csv(file = "data/vanessa-atalanta-data.csv", 
+                       stringsAsFactors = FALSE)
+# Subset to only those three days of interest
+vatal.data <- vatal.data[vatal.data$date %in% c("2012-04-15", "2012-04-16", "2012-04-17"), ]
+
+################################################################################
+# Graph with the ggmap package, plotting density
+
+# Map boundaries for get_map: left, bottom, right, top
+map.bounds <- c(-85, 42, -60, 48)
+# Omit one point that is very far north
+vatal.data <- vatal.data[vatal.data$latitude < 54, ]
+# Location: left, bottom, right, top
+canada.map <- get_map(location = map.bounds, source = "stamen", maptype = "toner-lite")
+vatal.map <- ggmap(canada.map) + 
+  stat_density2d(data = vatal.data,
+                 aes(x = longitude, y = latitude, fill = ..level.., alpha = ..level..),
+                 geom = "polygon",
+                 bins = 15) +
+  scale_fill_gradient(low = "#0000FF", high = "#FF0000") +
+  theme(legend.position = "none") +
+  theme(axis.title.x = element_blank(),
+        axis.title.y = element_blank()) +
+  facet_wrap(~date, nrow = 3)
+print(vatal.map)
+ggsave(vatal.map, filename = "output/figure-3-ggmap.pdf")
+
+
+################################################################################
+# SETUP
+# Load dependancies
+# Load data
+
 # Load dependancies
 #install.packages("maps")
 library("maps")
