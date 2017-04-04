@@ -48,11 +48,12 @@ dplex.map <- ggmap(canada.map) +
                  bins = 60) +
   scale_fill_gradient(low = "#0000FF", high = "#FF0000") +
   theme(legend.position = "none") +
-  theme(axis.title.x = element_blank(),
-        axis.title.y = element_blank()) +
+  theme(axis.title = element_blank(),
+        axis.text = element_blank(),
+        axis.ticks = element_blank()) +
   facet_wrap(~MonthName, nrow = 3)
 print(dplex.map)
-ggsave(dplex.map, filename = "output/figure-4-ggmap.pdf")
+ggsave(dplex.map, filename = "output/figure-4-ggmap.pdf", width = 6, height = 9, units = "in")
 
 ################################################################################
 # SETUP
