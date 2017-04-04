@@ -40,14 +40,16 @@ vatal.map <- ggmap(canada.map) +
   stat_density2d(data = vatal.data,
                  aes(x = longitude, y = latitude, fill = ..level.., alpha = ..level..),
                  geom = "polygon",
-                 bins = 15) +
+                 bins = 25) +
   scale_fill_gradient(low = "#0000FF", high = "#FF0000") +
+  # geom_point(data = vatal.data, aes(x = longitude, y = latitude))
   theme(legend.position = "none") +
-  theme(axis.title.x = element_blank(),
-        axis.title.y = element_blank()) +
+  theme(axis.title = element_blank(),
+        axis.text = element_blank(),
+        axis.ticks = element_blank()) +
   facet_wrap(~date, nrow = 3)
 print(vatal.map)
-ggsave(vatal.map, filename = "output/figure-3-ggmap.pdf")
+ggsave(vatal.map, filename = "output/figure-3-ggmap.pdf", width = 6, height = 9, units = "in")
 
 
 ################################################################################
