@@ -39,3 +39,22 @@ checklist.data <- checklist.data[!is.na(checklist.data$Latitude), ]
 checklist.data <- checklist.data[checklist.data$Latitude >= 20 & checklist.data$Latitude <= 70, ]
 checklist.data <- checklist.data[checklist.data$Longitude >= -180 & checklist.data$Longitude <= -50, ]
 
+################################################################################
+# Graph with the ggmap package, plotting density
+
+# Map boundaries for get_map: left, bottom, right, top
+map.bounds <- c(-165, 20, -50, 70)
+# Location: left, bottom, right, top
+north.america <- get_map(location = map.bounds, source = "stamen", maptype = "toner-lite")
+checklist.map <- ggmap(north.america) + 
+  stat_density2d(data = checklist.data,
+                 aes(x = Longitude, y = Latitude, fill = ..level.., alpha = ..level..),
+                 geom = "polygon",
+                 bins = 200) +
+  scale_fill_gradient(low = "#0000FF", high = "#FF0000") +
+  theme(legend.position = "none") +
+  theme(axis.title = element_blank(),
+        axis.text = element_blank(),
+        axis.ticks = element_blank())
+print(checklist.map)
+ggsave(checklist.map, filename = "output/figure-2-ggmap.pdf", width = 6, height = 9, units = "in")
