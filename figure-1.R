@@ -8,7 +8,7 @@ rm(list = ls())
 ################################################################################
 submission.data <- read.csv(file = "data/submission-data.csv")
 output.file <- "output/figure-1"
-output.format <- "pdf"
+output.format <- "png"
 
 # Create a date column
 add.zero <- submission.data$month < 10
