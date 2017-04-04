@@ -14,7 +14,7 @@ library("ggplot2")
 # install.packages("ggmap")
 library("ggmap")
 
-
+# Original data file is all_records_2017_01_11_08_09_57.csv
 # Cleaned these data, dropping deg, min, sec records via (in bash):
 # grep [^0-9a-zA-Z,\-\.\:\s] observation-data.csv > observation-data-clean.csv
 # sed "s/'/REPLACEME/g" observation-data-clean.csv > observation-data-clean-02.csv
