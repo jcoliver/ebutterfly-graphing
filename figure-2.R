@@ -57,5 +57,4 @@ checklist.map <- ggmap(north.america) +
         axis.text = element_blank(),
         axis.ticks = element_blank())
 print(checklist.map)
-ggsave(checklist.map, filename = "output/figure-2-ggmap.pdf", width = 6, height = 9, units = "in")
-ggsave(checklist.map, filename = "output/figure-2-ggmap.png", width = 6, height = 4.125, units = "in")
+ggsave(checklist.map, filename = "output/figure-2.pdf", width = 6, height = 9, units = "in")
