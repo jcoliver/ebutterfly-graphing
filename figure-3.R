@@ -49,7 +49,7 @@ ca.provinces <- c("Ontario", "Québec", "New Brunswick", "Nova Scotia",
                   "Prince Edward Island")
 ca.province.data <- canada[canada$NAME_1 %in% ca.provinces, ]
 
-pdf(file = "output/figure-3-raster.pdf", useDingbats = FALSE)
+pdf(file = "output/figure-3.pdf", useDingbats = FALSE)
 par(mfrow = c(3, 1),
     mar = c(1, 2, 1, 1) + 0.1)
 for (one.date in dates) {
